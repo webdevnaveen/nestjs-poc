@@ -5,9 +5,14 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() body: { username: string; password: string }) {
-    const hashedPassword = await this.authService.hashPassword(body.password);
-    return { message: 'User registered', hashedPassword };
-  }
+    @Post('register')
+    async register(@Body() body: { username: string; password: string }) {
+        const hashedPassword = await this.authService.hashPassword(body.password);
+        return { message: 'User registered', hashedPassword };
+    }
+
+    @Post('login')
+    async login(@Body() loginDto: { username: string; password: string }) {
+    return this.authService.login(loginDto);
+    }
 }
