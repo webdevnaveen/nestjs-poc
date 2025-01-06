@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocumentsModule } from './document/document.module';
-import { IngestionModule } from './ingestion.module';
+import { IngestionModule } from './ingestion/ingestion.module';
 
 @Module({
   imports: [
