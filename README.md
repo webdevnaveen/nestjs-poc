@@ -1,99 +1,127 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Application for User and Document Management
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a NestJS-based API that handles **user authentication**, **user role management**, **document management**, and **ingestion processes**. It uses **TypeORM** for database operations, **JWT** for authentication, and **NestJS services** to encapsulate business logic for each module.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Installation](#installation)
+- [Environment Setup](#environment-setup)
+- [Modules and Features](#modules-and-features)
+  - [Auth Module](#auth-module)
+  - [User Module](#user-module)
+  - [Document Module](#document-module)
+  - [Ingestion Module](#ingestion-module)
+- [Database Configuration](#database-configuration)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## Installation
+
+1. **Clone the Repository**
+
+   First, clone the repository to your local machine:
+
+   ```bash
+   git clone https://github.com/your-username/nestjs-user-document-management.git
+   cd nestjs-user-document-management
+# Project Setup and Configuration
+
+## Environment Setup
+
+### Environment Variables
+
+Set up the necessary environment variables by creating a `.env` file at the root of the project. Below are the recommended environment variables:
+
+```plaintext
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your-username
+DB_PASSWORD=your-password
+DB_NAME=your-database
+JWT_SECRET=your-jwt-secret
 ```
 
-## Compile and run the project
 
-```bash
-# development
-$ npm run start
+## Modules and Features
 
-# watch mode
-$ npm run start:dev
+### Auth Module
 
-# production mode
-$ npm run start:prod
-```
+The Auth module handles user authentication, including login, logout, and JWT-based access control. It supports user authentication via email and password and generates JWT tokens for access.
 
-## Run tests
+#### Endpoints:
 
-```bash
-# unit tests
-$ npm run test
+- `POST /auth/login`: Logs in a user and generates a JWT token.
+- `POST /auth/register`: Registers a new user.
+- `POST /auth/logout`: Logs out a user (optional, for token invalidation).
 
-# e2e tests
-$ npm run test:e2e
+#### Auth Service Functions:
 
-# test coverage
-$ npm run test:cov
-```
+- `hashPassword()`: Hashes user passwords using bcrypt.
+- `validatePassword()`: Validates password during login.
+- `login()`: Authenticates the user and generates JWT tokens.
 
-## Deployment
+### User Module
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+The User module manages user roles and permissions within the system. Only admin users can update user roles.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+#### Endpoints:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+- `GET /users`: Returns all users.
+- `GET /users/:id`: Retrieves a user by ID.
+- `PUT /users/:id/role`: Updates the role of a user.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+#### User Service Functions:
 
-## Resources
+- `updateUserRole()`: Updates the role of an existing user.
 
-Check out a few resources that may come in handy when working with NestJS:
+### Document Module
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+The Document module handles CRUD operations for managing documents, including uploading and retrieving documents.
 
-## Support
+#### Endpoints:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- `POST /documents`: Creates a new document.
+- `GET /documents`: Retrieves all documents.
+- `GET /documents/:id`: Retrieves a specific document by ID.
+- `PUT /documents/:id`: Updates a document.
+- `DELETE /documents/:id`: Deletes a document.
 
-## Stay in touch
+#### Document Service Functions:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- `createDocument()`: Creates a new document.
+- `getAllDocuments()`: Retrieves all documents.
+- `getDocumentById()`: Retrieves a document by ID.
+- `updateDocument()`: Updates a document by ID.
+- `deleteDocument()`: Deletes a document.
 
-## License
+### Ingestion Module
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+The Ingestion module allows triggering and managing the ingestion process.
+
+#### Endpoints:
+
+- `POST /ingestions`: Triggers the ingestion process.
+- `GET /ingestions`: Retrieves all ingestion records.
+- `GET /ingestions/:id`: Retrieves a specific ingestion by ID.
+- `PUT /ingestions/:id/status`: Updates the status of an ingestion.
+
+#### Ingestion Service Functions:
+
+- `triggerIngestion()`: Triggers the ingestion process.
+- `getAllIngestions()`: Retrieves all ingestion records.
+- `getIngestionById()`: Retrieves a specific ingestion by ID.
+- `updateIngestionStatus()`: Updates the status of an ingestion.
+
+## Database Configuration
+
+The database is configured using TypeORM. Here's the basic configuration in the `.env` file:
+
+```plaintext
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your-username
+DB_PASSWORD=your-password
+DB_NAME=your-database
+
